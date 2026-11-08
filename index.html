@@ -91,7 +91,8 @@ const dialog=document.getElementById("creatorDialog");
 const countdown=document.getElementById("countdown");
 
 function dayAvailable(day){
-  return true;
+  const unlock=new Date(year,11,day,0,0,0);
+  return now>=unlock;
 }
 
 function render(){
