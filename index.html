@@ -37,7 +37,6 @@ dialog::backdrop{background:#03060bcc;backdrop-filter:blur(7px)}
 .model-link-wrap{display:block;margin:18px 0;text-decoration:none;border-radius:14px;overflow:hidden;border:2px solid #2c5874;transition:transform .2s, border-color .2s}
 .model-link-wrap:hover{transform:scale(1.01);border-color:var(--blue)}
 .model-img{width:100%;max-height:420px;object-fit:cover;display:block}
-.model-hint{text-align:center;font-size:.82rem;color:var(--ice);background:#101e2e;padding:8px;font-weight:600}
 .slot{min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;border:1px dashed #3c5974;border-radius:12px;background:#101e2e;color:#91a5bb;font-size:.86rem;margin:18px 0}
 
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
@@ -88,10 +87,10 @@ const creators = [
   },
   /* Dag 3 */
   {
-    name: "Model 3",
-    intro: "Klik på billedet for at åbne albummet.",
-    image: "December3.jpg",
-    albumUrl: "https://example.com"
+    name: "Nikoline Fray",
+    intro: "Dagens goon materiale er Nikoline Fray! Klik på billedet for at åbne albummet.",
+    image: "December2.jpg",
+    albumUrl: "https://www.imagepond.net/a/ABmiQ3aq"
   },
   /* Dag 4 */
   {
@@ -251,7 +250,7 @@ const dialog=document.getElementById("creatorDialog");
 const countdown=document.getElementById("countdown");
 
 function dayAvailable(day){
-  if (TEST_MODE) return true; // Hvis test-mode er slået til, åbn alt med det samme
+  if (TEST_MODE) return true;
   const unlock=new Date(year,11,day,0,0,0);
   return now>=unlock;
 }
@@ -296,7 +295,6 @@ function openDoor(day){
     a.rel = "noopener noreferrer";
     a.innerHTML = `
       <img src="${creator.image}" alt="${creator.name}" class="model-img">
-      <div class="model-hint">🔥 Klik på billedet for at åbne hele albummet 🔥</div>
     `;
     container.appendChild(a);
   } else {
