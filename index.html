@@ -33,14 +33,20 @@ dialog::backdrop{background:#03060bcc;backdrop-filter:blur(7px)}
 .modal-head h2{margin:6px 0 0;font-size:1.8rem}
 .modal-body{padding:22px 24px}
 .intro{color:#c4cede;line-height:1.65;white-space:pre-wrap}
-.media{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0}
-.slot{min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;border:1px dashed #3c5974;border-radius:12px;background:#101e2e;color:#91a5bb;font-size:.86rem}
+
+/* Billede styling til modalkassen */
+.model-link-wrap{display:block;margin:18px 0;text-decoration:none;border-radius:14px;overflow:hidden;border:2px solid #2c5874;transition:transform .2s, border-color .2s}
+.model-link-wrap:hover{transform:scale(1.01);border-color:var(--blue)}
+.model-img{width:100%;max-height:420px;object-fit:cover;display:block}
+.model-hint{text-align:center;font-size:.82rem;color:var(--ice);background:#101e2e;padding:8px;font-weight:600}
+.slot{min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;border:1px dashed #3c5974;border-radius:12px;background:#101e2e;color:#91a5bb;font-size:.86rem;margin:18px 0}
+
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
 a.link,button.close{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
 a.link{background:var(--blue);color:#04121b}
 button.close{background:#243347;color:#e5edf7}
 @media(min-width:760px){.grid{grid-template-columns:repeat(6,minmax(0,1fr))}.door{min-height:155px}}
-@media(max-width:420px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.door{min-height:120px}.num{font-size:1.8rem}.media{grid-template-columns:1fr}}
+@media(max-width:420px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.door{min-height:120px}.num{font-size:1.8rem}}
 </style>
 </head>
 <body>
@@ -53,21 +59,46 @@ button.close{background:#243347;color:#e5edf7}
   <footer>En privat julekalender til venner · Magu's goon kalender 2026</footer>
 </main>
 <dialog id="creatorDialog">
-  <div class="modal-head"><small id="doorDate">Dagens drop</small><h2 id="creatorName">Creator navn</h2></div>
+  <div class="modal-head"><small id="doorDate">Dagens drop</small><h2 id="creatorName">Model Navn</h2></div>
   <div class="modal-body">
     <p class="intro" id="creatorIntro"></p>
-    <div class="media" id="mediaSlots"></div>
+    <div id="mediaContainer"></div>
     <div class="actions" id="creatorLinks"></div>
     <div class="actions"><button class="close" id="closeDialog">Luk lågen</button></div>
   </div>
 </dialog>
 <script>
-const creators = Array.from({length:24},(_,i)=>({
-  name:`Creator ${String(i+1).padStart(2,"0")}`,
-  intro:"Skriv dagens introduktion her. Tilføj et par linjer om creatorens content og hvorfor vedkommende er dagens låge.",
-  media:["Indsæt billede eller video-link 1","Indsæt billede eller video-link 2"],
-  links:[{label:"Profil-link",url:"https://example.com"}]
-}));
+// Eksempel på hvordan du udfylder hver enkelt dag:
+// image: Direkte link til et billede af modellen (.jpg/.png)
+// albumUrl: Linket til hjemmesiden/albummet som åbnes når man klikker på billedet
+const creators = [
+  {
+    name: "Model 1 Navn",
+    intro: "Her er dagens model! Klik på billedet for at se hele albummet og videoer.",
+    image: "https://via.placeholder.com/600x400?text=Model+1+Billede", // Erstat med rigtigt billedlink
+    albumUrl: "https://example.com/album-1",                        // Erstat med link til albummet
+    links: [{ label: "Åbn Album Direkte", url: "https://example.com/album-1" }]
+  },
+  {
+    name: "Model 2 Navn",
+    intro: "Klik på billedet for at åbne hendes album.",
+    image: "", // Lad stå tom hvis der ikke er et billede endnu
+    albumUrl: "https://example.com/album-2",
+    links: []
+  }
+];
+
+// Automatisk generering af resten af dagene op til 24, hvis de ikke er defineret ovenfor
+for(let i = creators.length; i < 24; i++) {
+  creators.push({
+    name: `Model ${i+1}`,
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "",
+    albumUrl: "https://example.com",
+    links: []
+  });
+}
+
 const now=new Date();
 const year=2026;
 const openedKey="creator-advent-opened-2026";
@@ -75,10 +106,12 @@ const opened=new Set(JSON.parse(localStorage.getItem(openedKey)||"[]"));
 const grid=document.getElementById("doors");
 const dialog=document.getElementById("creatorDialog");
 const countdown=document.getElementById("countdown");
+
 function dayAvailable(day){
   const unlock=new Date(year,11,day,0,0,0);
   return now>=unlock;
 }
+
 function render(){
   grid.innerHTML="";
   for(let day=1;day<=24;day++){
@@ -95,6 +128,7 @@ function render(){
   else if(now>=end)countdown.textContent="Alle 24 låger er nu åbne ✨";
   else countdown.textContent=`Låge ${now.getDate()} er klar — dagens drop venter 🎁`;
 }
+
 function openDoor(day){
   if(!dayAvailable(day))return;
   const creator=creators[day-1];
@@ -102,12 +136,35 @@ function openDoor(day){
   document.getElementById("doorDate").textContent=`${day}. december · dagens drop`;
   document.getElementById("creatorName").textContent=creator.name;
   document.getElementById("creatorIntro").textContent=creator.intro;
-  const media=document.getElementById("mediaSlots");media.innerHTML="";
-  creator.media.forEach((item,i)=>{const slot=document.createElement("div");slot.className="slot";slot.textContent=item||`Tilføj medie ${i+1}`;media.appendChild(slot)});
+  
+  const container = document.getElementById("mediaContainer");
+  container.innerHTML = "";
+
+  if (creator.image) {
+    const a = document.createElement("a");
+    a.className = "model-link-wrap";
+    a.href = creator.albumUrl || "#";
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.innerHTML = `
+      <img src="${creator.image}" alt="${creator.name}" class="model-img">
+      <div class="model-hint">🔥 Klik på billedet for at åbne hele albummet 🔥</div>
+    `;
+    container.appendChild(a);
+  } else {
+    const slot = document.createElement("div");
+    slot.className = "slot";
+    slot.textContent = "Tilføj billed-link (image) i koden for denne dag";
+    container.appendChild(slot);
+  }
+
   const links=document.getElementById("creatorLinks");links.innerHTML="";
-  creator.links.forEach(link=>{const a=document.createElement("a");a.className="link";a.textContent=link.label;a.href=link.url;a.target="_blank";a.rel="noopener noreferrer";links.appendChild(a)});
+  if(creator.links){
+    creator.links.forEach(link=>{const a=document.createElement("a");a.className="link";a.textContent=link.label;a.href=link.url;a.target="_blank";a.rel="noopener noreferrer";links.appendChild(a)});
+  }
   dialog.showModal();
 }
+
 document.getElementById("closeDialog").addEventListener("click",()=>dialog.close());
 render();
 </script>
