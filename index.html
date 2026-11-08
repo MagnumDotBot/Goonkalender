@@ -64,29 +64,183 @@ button.close{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-wei
   </div>
 </dialog>
 <script>
+// ==========================================
+// INDSTILLINGER FOR TEST OG DATOER
+// Sæt til 'true' for at låse alle op med det samme.
+// Sæt til 'false' for at bruge den automatiske datolås.
+const TEST_MODE = true; 
+// ==========================================
+
 const creators = [
+  /* Dag 1 */
   {
     name: "KatSoKinky",
     intro: "Dagens goon materiale er KatSoKinky! Klik på billedet for at se hele albummet:)",
     image: "December1.jpg", 
     albumUrl: "https://www.imagepond.net/a/ASl0bofn"
   },
+  /* Dag 2 */
   {
-    name: "Nikoline Fray",
-    intro: "Dagens goon materiale er Nikoline Fray! Klik på billedet for at se hele albummet:)",
-    image: "December2.jpg", 
-    albumUrl: "https://www.imagepond.net/my-uploads"
+    name: "Model 2",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December2.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 3 */
+  {
+    name: "Model 3",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December3.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 4 */
+  {
+    name: "Model 4",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December4.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 5 */
+  {
+    name: "Model 5",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December5.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 6 */
+  {
+    name: "Model 6",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December6.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 7 */
+  {
+    name: "Model 7",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December7.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 8 */
+  {
+    name: "Model 8",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December8.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 9 */
+  {
+    name: "Model 9",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December9.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 10 */
+  {
+    name: "Model 10",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December10.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 11 */
+  {
+    name: "Model 11",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December11.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 12 */
+  {
+    name: "Model 12",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December12.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 13 */
+  {
+    name: "Model 13",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December13.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 14 */
+  {
+    name: "Model 14",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December14.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 15 */
+  {
+    name: "Model 15",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December15.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 16 */
+  {
+    name: "Model 16",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December16.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 17 */
+  {
+    name: "Model 17",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December17.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 18 */
+  {
+    name: "Model 18",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December18.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 19 */
+  {
+    name: "Model 19",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December19.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 20 */
+  {
+    name: "Model 20",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December20.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 21 */
+  {
+    name: "Model 21",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December21.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 22 */
+  {
+    name: "Model 22",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December22.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 23 */
+  {
+    name: "Model 23",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December23.jpg",
+    albumUrl: "https://example.com"
+  },
+  /* Dag 24 */
+  {
+    name: "Model 24",
+    intro: "Klik på billedet for at åbne albummet.",
+    image: "December24.jpg",
+    albumUrl: "https://example.com"
   }
 ];
-
-for(let i = creators.length; i < 24; i++) {
-  creators.push({
-    name: `Model ${i+1}`,
-    intro: "Klik på billedet for at åbne albummet.",
-    image: "",
-    albumUrl: "https://example.com"
-  });
-}
 
 const now=new Date();
 const year=2026;
@@ -97,6 +251,7 @@ const dialog=document.getElementById("creatorDialog");
 const countdown=document.getElementById("countdown");
 
 function dayAvailable(day){
+  if (TEST_MODE) return true; // Hvis test-mode er slået til, åbn alt med det samme
   const unlock=new Date(year,11,day,0,0,0);
   return now>=unlock;
 }
@@ -113,9 +268,13 @@ function render(){
     grid.appendChild(btn);
   }
   const start=new Date(year,11,1),end=new Date(year,11,25);
-  if(now<start)countdown.textContent=`Kalenderen åbner om ${Math.ceil((start-now)/86400000)} dage 🎁`;
-  else if(now>=end)countdown.textContent="Alle 24 låger er nu åbne ✨";
-  else countdown.textContent=`Låge ${now.getDate()} er klar — dagens drop venter 🎁`;
+  if (TEST_MODE) {
+    countdown.textContent = "Test-tilstand aktiv (alle låger er åbne) 🎁";
+  } else {
+    if(now<start)countdown.textContent=`Kalenderen åbner om ${Math.ceil((start-now)/86400000)} dage 🎁`;
+    else if(now>=end)countdown.textContent="Alle 24 låger er nu åbne ✨";
+    else countdown.textContent=`Låge ${now.getDate()} er klar — dagens drop venter 🎁`;
+  }
 }
 
 function openDoor(day){
