@@ -36,33 +36,21 @@ dialog::backdrop{background:#03060bcc;backdrop-filter:blur(7px)}
 .media{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0}
 .slot{min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;border:1px dashed #3c5974;border-radius:12px;background:#101e2e;color:#91a5bb;font-size:.86rem}
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-a.link,button.close,button.confirm{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
-a.link,button.confirm{background:var(--blue);color:#04121b}
+a.link,button.close{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+a.link{background:var(--blue);color:#04121b}
 button.close{background:#243347;color:#e5edf7}
-.age{position:fixed;inset:0;z-index:5;background:#050812f2;display:grid;place-items:center;padding:20px}
-.age-card{max-width:460px;background:#111c2b;border:1px solid #2c5874;border-radius:20px;padding:28px;text-align:center;box-shadow:0 20px 80px #0008}
-.age-card h2{margin-top:0}
-.age-card p{color:#b5c2d3;line-height:1.55}
 @media(min-width:760px){.grid{grid-template-columns:repeat(6,minmax(0,1fr))}.door{min-height:155px}}
 @media(max-width:420px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.door{min-height:120px}.num{font-size:1.8rem}.media{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="age" id="ageGate">
-  <div class="age-card">
-    <div style="font-size:2.4rem">🔞</div>
-    <h2>Kun for voksne</h2>
-    <p>Denne kalender er tænkt til et voksent publikum (18+). Bekræft, at du er mindst 18 år, før du fortsætter.</p>
-    <button class="confirm" id="ageConfirm">Jeg er 18 år eller ældre</button>
-  </div>
-</div>
 <main>
   <h1>MAGU'S <span>GOON KALENDER</span></h1>
   <p class="sub">Velkommen til Magu's goonkalender. Nyt goonmateriale hver dag hele december :)</p>
   <div class="countdown" id="countdown">Julekalenderen åbner 1. december 🎁</div>
   <section class="grid" id="doors" aria-label="Julekalenderens 24 låger"></section>
   <p class="notice">Lågerne åbner efter datoen. Allerede åbnede låger huskes på denne enhed.</p>
-  <footer>En privat julekalender til venner · 18+ · Magu's goon kalender 2026</footer>
+  <footer>En privat julekalender til venner · Magu's goon kalender 2026</footer>
 </main>
 <dialog id="creatorDialog">
   <div class="modal-head"><small id="doorDate">Dagens drop</small><h2 id="creatorName">Creator navn</h2></div>
@@ -74,8 +62,6 @@ button.close{background:#243347;color:#e5edf7}
   </div>
 </dialog>
 <script>
-// Redigér creators-objekterne her: navn, intro, medie-slots og links.
-// Tip: brug embeds/links til medier, som du har tilladelse til at dele.
 const creators = Array.from({length:24},(_,i)=>({
   name:`Creator ${String(i+1).padStart(2,"0")}`,
   intro:"Skriv dagens introduktion her. Tilføj et par linjer om creatorens content og hvorfor vedkommende er dagens låge.",
@@ -117,14 +103,12 @@ function openDoor(day){
   document.getElementById("creatorName").textContent=creator.name;
   document.getElementById("creatorIntro").textContent=creator.intro;
   const media=document.getElementById("mediaSlots");media.innerHTML="";
-  creator.media.mediaSlots.forEach((item,i)=>{const slot=document.createElement("div");slot.className="slot";slot.textContent=item||`Tilføj medie ${i+1}`;media.appendChild(slot)});
+  creator.media.forEach((item,i)=>{const slot=document.createElement("div");slot.className="slot";slot.textContent=item||`Tilføj medie ${i+1}`;media.appendChild(slot)});
   const links=document.getElementById("creatorLinks");links.innerHTML="";
   creator.links.forEach(link=>{const a=document.createElement("a");a.className="link";a.textContent=link.label;a.href=link.url;a.target="_blank";a.rel="noopener noreferrer";links.appendChild(a)});
   dialog.showModal();
 }
 document.getElementById("closeDialog").addEventListener("click",()=>dialog.close());
-document.getElementById("ageConfirm").addEventListener("click",()=>{document.getElementById("ageGate").style.display="none";localStorage.setItem("creator-advent-age-confirmed","yes")});
-if(localStorage.getItem("creator-advent-age-confirmed")==="yes")document.getElementById("ageGate").style.display="none";
 render();
 </script>
 </body>
